@@ -1,60 +1,52 @@
 import utils from 'resources/utils'
-export const CHANGE_ROUTE = 'CHANGE_ROUTE'
 
-// const requestConstants = () => {
-//     return utils.request({
-//         url: '/AppModels/constants'
-//     });
-// }
+export const LAUNCHES_RECEIVED = 'LAUNCHES_RECEIVED'
+export const LAUNCH_SELECTED = 'LAUNCH_SELECTED'
 
-// export const getUser = (id) => {
-//     return dispatch => {
-//         utils.request({
-//             url: `users/${id}`
-//         }).then(
-//             res => dispatch(userDetailsFetched(res.data)),
-//             err => {
-//                 utils.clearCookies()
-//             }
-//         )
-//     }
-// }
-
-// const settingsReceived = (settings) => ({
-//     type: SETTINGS_RECEIVED,
-//     settings
-// })
-export const getCount = (id) => {
-    return dispatch => {
-        utils.request({
-            url: `users/${id}`
-        }).then(
-            res => dispatch(countReceived(res.data)),
-            err => {
-                utils.clearCookies()
-            }
-        )
-    }
+const requestLaunchList = () => {
+    return utils.request({
+        url: '/launches',
+        method: "GET",
+        params: {
+            start: "",
+            end: '2013-12-31"'
+        }
+    });
 }
 
+const requestSelectLaunch = (flight_number) => {
+    return utils.request({
+        url: `/launches/${flight_number}`,
+        method: "GET"
+    });
+}
 
 export const getLaunchList = (id) => {
     return dispatch => {
-        utils.request({
-            url: `users/${id}`
-        }).then(
-            res => dispatch(launchesReceived(res.data)),
-            err => {
-                utils.clearCookies()
+        requestLaunchList().then(
+            res => {
+                dispatch(launchesReceived(res.data))
             }
         )
     }
 }
 
-const launchesReceived = () => ({
+export const selectLaunch = (flight_number) => {
+    return dispatch => {
+        requestSelectLaunch(flight_number).then(
+            res => {
+                dispatch(launchSelected(res.data))
+            }
+        )
+    }
+}
 
+const launchSelected = (launch) => ({
+    type: LAUNCH_SELECTED,
+    launch
 })
 
-const countReceived = () => ({
-
+const launchesReceived = (launches) => ({
+    type: LAUNCHES_RECEIVED,
+    launches
 })

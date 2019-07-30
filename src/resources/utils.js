@@ -7,14 +7,6 @@ axios.defaults.baseURL = CONFIG.getAPIUrl();
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 const cookies = new Cookies();
 
-let setRequestAuthHeader = (accessToken) => {
-    axios.defaults.headers.common['Authorization'] = accessToken;
-}
-let userAccessToken = cookies.get('access_token');
-// console.log('User access token', userAccessToken);
-if (userAccessToken)
-    setRequestAuthHeader(userAccessToken);
-
 
 let utilities = {
     request: (config) => {
@@ -28,7 +20,6 @@ let utilities = {
     clearCookies: () => {
         cookies.remove('access_token');
         cookies.remove('userId');
-        setRequestAuthHeader('');
     },
     isAuthenticated: () => {
         return !!cookies.get('access_token');
@@ -95,7 +86,6 @@ let utilities = {
         userId = userId || '';
         cookies.set('access_token', accessToken, { path: '/' });
         cookies.set('userId', userId, { path: '/' });
-        setRequestAuthHeader(accessToken);
     }
 }
 

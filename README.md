@@ -1,1 +1,1 @@
-# edudictive-admin
+# SPA

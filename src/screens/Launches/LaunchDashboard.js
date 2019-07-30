@@ -13,12 +13,12 @@ import {
     ListItemSecondaryAction
 } from '@material-ui/core';
 import {
-    getLaunchList,
-    getCount
+    getLaunchList
 } from './redux-config';
 import Details from './tabs/details';
+import moment from 'moment'
 
-const BASE_URL = '/dashboard/launches'
+const BASE_URL = '/launch'
 
 const HEAD_LINKS = [
     {
@@ -53,7 +53,6 @@ class LaunchDashboard extends Component {
 
     componentDidMount() {
         this.getPageData();
-        this.props.getCount();
     }
 
     gotoDetails = (teacherId) => {
@@ -62,17 +61,12 @@ class LaunchDashboard extends Component {
 
     render() {
         const { launchList, fetchingTeachersList, classes } = this.props;
-        const list = _.map(launchList, teacher => {
+        const list = _.map(launchList, launch => {
             return (
-                <span key={teacher.id} onClick={() => this.gotoDetails(teacher.id)}>
-                    <NavLink className={classes.listItem} to={`${BASE_URL}/${teacher.id}`} activeClassName={"selected"} >
+                <span key={launch.id} onClick={() => this.gotoDetails(launch.flight_number)}>
+                    <NavLink className={classes.listItem} to={`${BASE_URL}/${launch.id}`} activeClassName={"selected"} >
                         <ListItem button>
-                            <ListItemText primary={`${teacher.firstName || teacher.email}`} />
-                            <ListItemSecondaryAction>
-                                <ListItemText
-                                    primary={teacher.isPublished ? ' ' : <i className={`material-icons ${classes.primaryListLockIcon}`}>lock</i>}
-                                />
-                            </ListItemSecondaryAction>
+                            <ListItemText primary={`${_.get(launch.rocket, "second_stage.payloads[0].cap_serial") || "-"}`} secondary={`${moment(launch.launch_date_utc).format("DD MM YYYY")}`} />
                         </ListItem>
                         <Divider className={classes.divider} />
                     </NavLink>
@@ -102,7 +96,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
     getLaunchList: (filters) => dispatch(getLaunchList(filters)),
-    getCount: () => dispatch(getCount())
 })
 
 export default withStyles(STYLES)(connect(mapStateToProps, mapDispatchToProps)(LaunchDashboard))

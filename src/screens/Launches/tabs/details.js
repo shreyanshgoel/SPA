@@ -6,6 +6,7 @@ import {
     Grid
 } from '@material-ui/core/';
 import _ from 'lodash'
+import { selectLaunch } from '../redux-config';
 
 
 const STYLES = theme => ({
@@ -25,34 +26,46 @@ const STYLES = theme => ({
             margin: '0 10px'
         }
     },
+    details: {
+        display: "flex", justifyContent: "space-between"
+    }
 })
 
 class TeacherDetails extends Component {
 
     componentDidMount() {
-        this.props.selectTeacher(_.get(this.props.match, 'params.id'))
+        this.props.selectLaunch(_.get(this.props.match, 'params.id'))
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.match.params.id !== this.props.match.params.id)
-            this.props.selectTeacher(this.props.match.params.id)
+            this.props.selectLaunch(this.props.match.params.id)
     }
 
     render() {
-        const { classes, selectedTeacher } = this.props
+        const { classes, selectedLaunch } = this.props
         return (
             <div className={classes.root}>
                 {
-                    selectedTeacher &&
+                    selectedLaunch &&
                     <span>
                         <div className={classes.operationBtns}>
                         </div>
                         <Paper className={classes.paper}>
-                            <p>Name: {selectedTeacher.firstName || '-'}</p><br />
-                            <p>Email: {selectedTeacher.email || '-'}</p><br />
-                            <p>Deposit: {selectedTeacher.deposit || '-'}</p><br />
-                            <p>Winnings: {selectedTeacher.winnings || '0'}</p><br />
-                            <p>Bonus: {selectedTeacher.bonus || '0'}</p><br />
+                            <div className={classes.details}>
+                                <p>Flight Number:</p>
+                                <p>{selectedLaunch.flight_number || '-'}</p>
+                            </div>
+                            <br />
+                            <div className={classes.details}>
+                                <p>Mission Name:</p>
+                                <p>{selectedLaunch.mission_name || '-'}</p>
+                            </div>
+                            <br />
+                            <div className={classes.details}>
+                                <p>Mission Id:</p>
+                                <p>{_.get(selectedLaunch, 'mission_id[0]') || '-'}</p>
+                            </div>
                         </Paper>
                     </span>
                 }
@@ -63,11 +76,11 @@ class TeacherDetails extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    ..._.pick(state.Teachers, ['selectedTeacher'])
+    ..._.pick(state.App, ['selectedLaunch'])
 })
 
 const mapDispatchToProps = dispatch => ({
-    // selectLaunch: (id) => dispatch(selectLaunch(id))
+    selectLaunch: (id) => dispatch(selectLaunch(id))
 })
 
 export default withStyles(STYLES)(connect(mapStateToProps, mapDispatchToProps)(TeacherDetails))

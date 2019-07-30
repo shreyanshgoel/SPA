@@ -66,7 +66,7 @@ class PrimaryLayout extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className={classes.main}>
                     <Switch>
-                        <Route path="/dashboard" component={AdminNav} />
+                        <Route path="/" component={AdminNav} />
                     </Switch>
                 </div>
             </MuiThemeProvider>
@@ -75,8 +75,7 @@ class PrimaryLayout extends Component {
 }
 
 const mapStateToProps = (state) => ({})
-const mapDispatchToProps = dispatch => ({
-})
+const mapDispatchToProps = dispatch => ({})
 const PrimaryComponent = withStyles(STYLES)(withRouter(connect(mapStateToProps, mapDispatchToProps)(PrimaryLayout)));
 
 class ScrollToTop extends Component {

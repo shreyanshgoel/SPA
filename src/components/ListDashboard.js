@@ -118,7 +118,7 @@ class ListDashboard extends Component {
     }
 
     selectItem = (props) => {
-        const { locationMatch = {}, browserLocation = {}, itemIdIndex = 3, onItemSelected, onItemUnselected } = props;
+        const { locationMatch = {}, browserLocation = {}, itemIdIndex = 2, onItemSelected, onItemUnselected } = props;
 
         const matchPath = locationMatch.path;
         const isExactUrl = locationMatch.isExact;

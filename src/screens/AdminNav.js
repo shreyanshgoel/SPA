@@ -91,9 +91,9 @@ class DashboardLayout extends Component {
                     <div className={classes.primaryPanelUpperSection} >
                         {
                             _.map(MENU_ITEM_NAV_LINKS, menu => {
-                                let selectedClass = menu.url === ((this.props.location.pathname.split('/')[2])) ? true : null;
+                                let selectedClass = menu.url === ((this.props.location.pathname.split('/')[1])) ? true : null;
                                 return (
-                                    <NavLink key={menu.url} exact to={`${matchUrl}/${menu.url}`}>
+                                    <NavLink key={menu.url} exact to={`/${menu.url}`}>
                                         <MenuItem className={selectedClass ? classes.selectedClass : ''} >
                                             {menu.name}
                                         </MenuItem>
@@ -102,19 +102,12 @@ class DashboardLayout extends Component {
                             })
                         }
                     </div>
-                    {
-                        <div className={classes.primaryPanelLowerSection} >
-                            <MenuItem onClick={this.logoutUser}>
-                                Sign Out
-                                </MenuItem>
-                        </div>
-                    }
                 </Drawer>
                 <div className={classes.dashboardContent}>
                     <Switch>
                         {
                             _.map(MENU_ITEM_NAV_LINKS, nav => {
-                                return <Route key={nav.url} path={`${matchUrl}/${nav.url}`} exact={nav.isExactUrl || false} component={nav.component}></Route>
+                                return <Route key={nav.url} path={`/${nav.url}`} exact={nav.isExactUrl || false} component={nav.component}></Route>
                             })
                         }
                     </Switch>
@@ -124,8 +117,8 @@ class DashboardLayout extends Component {
     }
 }
 
-const mapStateToProps = (state) => { }
-const mapDispatchToProps = (dispatch) => { }
+const mapStateToProps = (state) => ({})
+const mapDispatchToProps = (dispatch) => ({})
 
 const WithStyles = withStyles(STYLES)(DashboardLayout);
 export default connect(mapStateToProps, mapDispatchToProps)(WithStyles);
