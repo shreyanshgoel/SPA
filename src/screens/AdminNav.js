@@ -59,7 +59,7 @@ const STYLES = theme => ({
 
 const MENU_ITEM_NAV_LINKS = [
     {
-        name: 'Launch',
+        name: 'Total Launches',
         url: 'launch',
         component: LaunchDashboard
     }
